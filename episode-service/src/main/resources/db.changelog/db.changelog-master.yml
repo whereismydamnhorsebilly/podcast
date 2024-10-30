@@ -1,0 +1,29 @@
+databaseChangelog:
+  - changeSet:
+      id: 1
+      author: alexN
+      changes:
+        - createTable:
+            tableName: episode
+            columns:
+              - column:
+                  name: episode_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(500)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: podcast_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false

@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: podcast_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=podcast_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - podcast_postgres:/data/postgres
+
+  episode:
+    image: postgres:15-alpine
+    container_name: episode_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=episode_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - episode_postgres:/data/postgres
+
+volumes:
+  podcast_postgres:
+  episode_postgres:

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package com.example.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc";
+
+service EpisodeService {
+  rpc CreateEpisode (CreateEpisodeRequest) returns (EpisodeResponse);
+  rpc GetEpisode (GetEpisodeRequest) returns (EpisodeResponse);
+}
+
+message CreateEpisodeRequest {
+  string name = 1;
+  string description = 2;
+  int32 podcast_id = 3;
+}
+
+message GetEpisodeRequest {
+  int32 episode_id = 1;
+}
+
+message EpisodeResponse {
+  int32 episode_id = 1;
+  string name = 2;
+  string description = 3;
+  int32 podcast_id = 4;
+}
