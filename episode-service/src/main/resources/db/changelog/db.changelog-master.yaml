@@ -1,4 +1,4 @@
-databaseChangelog:
+databaseChangeLog:
   - changeSet:
       id: 1
       author: alexN
@@ -23,7 +23,7 @@ databaseChangelog:
                   constraints:
                     nullable: false
               - column:
-                  name: podcast_name
-                  type: varchar(50)
+                  name: podcast_id
+                  type: int
                   constraints:
                     nullable: false

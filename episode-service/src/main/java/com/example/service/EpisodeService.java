@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.grpc.PodcastServiceClient;
+import com.example.kafka.KafkaProducer;
 import com.example.model.Episode;
 import com.example.repository.EpisodeRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +15,12 @@ import java.util.List;
 public class EpisodeService {
 
     private final EpisodeRepository episodeRepository;
-    private final PodcastServiceClient podcastService = new PodcastServiceClient("localhost", 9090);
+    private final KafkaProducer kafkaProducer;
 
     public Episode createEpisode(Episode episode) {
-        try {
-            podcastService.getPodcast(episode.getPodcastId());
-            return episodeRepository.save(episode);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create episode");
-        }
+        Episode newEpisode = episodeRepository.save(episode);
+        kafkaProducer.send("episode-topic", String.valueOf(newEpisode.getId()));
+        return newEpisode;
     }
 
     public Episode getEpisode(int id) {

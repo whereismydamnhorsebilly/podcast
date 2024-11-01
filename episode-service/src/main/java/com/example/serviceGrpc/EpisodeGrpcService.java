@@ -1,11 +1,10 @@
 package com.example.serviceGrpc;
 
-import com.example.grpc.CreateEpisodeRequest;
-import com.example.grpc.EpisodeResponse;
-import com.example.grpc.EpisodeServiceGrpc;
-import com.example.grpc.GetEpisodeRequest;
+import com.example.grpc.*;
 import com.example.model.Episode;
 import com.example.service.EpisodeService;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -19,11 +18,19 @@ public class EpisodeGrpcService extends EpisodeServiceGrpc.EpisodeServiceImplBas
     @Override
     public void createEpisode(CreateEpisodeRequest request,
                               StreamObserver<EpisodeResponse> responseObserver) {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 9090)
+                .usePlaintext().build();
+        PodcastServiceGrpc.PodcastServiceBlockingStub stubPodcast = PodcastServiceGrpc.newBlockingStub(channel);
+
         try {
+            PodcastResponse podcastResponse = stubPodcast.getPodcast(GetPodcastRequest.newBuilder()
+                    .setPodcastId(request.getPodcastId()).build());
+
             Episode episode = episodeService.createEpisode(Episode.builder()
                     .name(request.getName())
                     .description(request.getDescription())
-                    .podcastId(request.getPodcastId())
+                    .podcastId(podcastResponse.getPodcastId())
                     .build());
 
             EpisodeResponse response = responseBuilder(episode);

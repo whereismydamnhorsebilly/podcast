@@ -1,6 +1,7 @@
 package com.example.podcastservice.service;
 
 import com.example.podcastservice.exception.PodcastNotFoundException;
+import com.example.podcastservice.kafka.KafkaProducer;
 import com.example.podcastservice.model.Podcast;
 import com.example.podcastservice.repository.PodcastRepository;
 import com.example.podcastservice.utils.Category;
@@ -16,9 +17,12 @@ import java.util.List;
 public class PodcastService {
 
     private final PodcastRepository podcastRepository;
+    private final KafkaProducer kafkaProducer;
 
     public Podcast createPodcast(Podcast podcast) {
-        return podcastRepository.save(podcast);
+        Podcast newPodcast = podcastRepository.save(podcast);
+        kafkaProducer.send("podcast-topic", String.valueOf(newPodcast.getId()));
+        return newPodcast;
     }
 
     public Podcast getPodcast(int id) {

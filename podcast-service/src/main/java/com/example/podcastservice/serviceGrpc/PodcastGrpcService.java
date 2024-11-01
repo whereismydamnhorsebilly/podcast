@@ -37,7 +37,6 @@ public class PodcastGrpcService extends PodcastServiceGrpc.PodcastServiceImplBas
     @Override
     public void getPodcast(GetPodcastRequest request,
                            StreamObserver<PodcastResponse> responseObserver) {
-
         try {
             Podcast podcast = podcastService.getPodcast(request.getPodcastId());
             PodcastResponse response = responseBuilder(podcast);
@@ -52,7 +51,6 @@ public class PodcastGrpcService extends PodcastServiceGrpc.PodcastServiceImplBas
     @Override
     public void getPodcastsByCategory(GetPodcastsByCategoryRequest request,
                                       StreamObserver<ListOfPodcastsResponse> responseObserver) {
-
         try {
             List<Podcast> podcasts = podcastService.getPodcastsByCategory(Category.valueOf(request.getCategory()));
             ListOfPodcastsResponse response = ListOfPodcastsResponse.newBuilder()
